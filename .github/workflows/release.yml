@@ -11,6 +11,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  debug:
+    name: Debug Context
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print workflow_run context
+        run: |
+          echo "=== Event Name ==="
+          echo "github.event_name: ${{ github.event_name }}"
+          echo ""
+          echo "=== workflow_run fields ==="
+          echo "head_branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "head_sha: ${{ github.event.workflow_run.head_sha }}"
+          echo "event: ${{ github.event.workflow_run.event }}"
+          echo "conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "name: ${{ github.event.workflow_run.name }}"
+          echo ""
+          echo "=== github.ref and github.ref_name ==="
+          echo "github.ref: ${{ github.ref }}"
+          echo "github.ref_name: ${{ github.ref_name }}"
+          echo ""
+          echo "=== Condition check ==="
+          echo "startsWith head_branch with v: ${{ startsWith(github.event.workflow_run.head_branch, 'v') }}"
+          echo ""
+          echo "=== Full workflow_run object ==="
+          echo '${{ toJSON(github.event.workflow_run) }}'
+
   release:
     # Only run if CI succeeded and this is a tag push
     if: >
